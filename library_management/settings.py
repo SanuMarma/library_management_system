@@ -100,18 +100,24 @@ WSGI_APPLICATION = 'library_management.wsgi.application'
 #     }
 # }
 
-
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env("DB_NAME"),
-        'USER': env("DB_USER"),
-        'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST"),
-        'PORT': env("DB_PORT"),
-    }
+    'default': dj_database_url.config(
+        default='postgresql://librarymanagement_j59a_user:naXvJ4iIFewGwaOeCgyK7gJIDY3dX6oK@dpg-cuc7guhu0jms7384c3kg-a.oregon-postgres.render.com/librarymanagement_j59a',        
+    )
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': env("DB_NAME"),
+#         'USER': env("DB_USER"),
+#         'PASSWORD': env("DB_PASSWORD"),
+#         'HOST': env("DB_HOST"),
+#         'PORT': env("DB_PORT"),
+#     }
+# }
 
 
 # Password validation
