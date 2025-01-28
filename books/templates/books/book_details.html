@@ -41,7 +41,8 @@
     </div>
 </div>
 
-
+{% if request.user.is_authenticated %}
+      
 <div class="card m-4">
     <h5 class="p-3">Total Reviews : {{reviews | length}}</h5>
     {% for review in reviews %}
@@ -63,5 +64,6 @@
     </div>
 </div>
 
+{% endif %}
 
 {% endblock %}

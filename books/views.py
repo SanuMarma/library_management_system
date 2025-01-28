@@ -3,6 +3,8 @@ from . import forms
 from .models import Book
 from django.contrib import messages
 from transactions.models import Transaction
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 from django.views.generic import DetailView
@@ -12,7 +14,7 @@ class DetailBookView(DetailView):
     pk_url_kwarg = 'id'
     template_name = 'books/book_details.html'
 
- 
+    @method_decorator(login_required, name='dispatch')
     def post(self, request, *args, **kwargs):
         review_form = forms.ReviewForm(data=self.request.POST)
         book = self.get_object()

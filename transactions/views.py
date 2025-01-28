@@ -11,6 +11,8 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.http import HttpResponse
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, ListView
 from transactions.constants import DEPOSIT, BORROW, RETURN
 from datetime import datetime
@@ -56,7 +58,6 @@ class TransactionCreateMixin(LoginRequiredMixin, CreateView):
 
         return context
 
-
 class DepositMoneyView(TransactionCreateMixin):
     form_class = DepositForm
     title = 'Deposit'
@@ -82,7 +83,8 @@ class DepositMoneyView(TransactionCreateMixin):
         send_transaction_email(self.request.user, amount, "Deposite Message", "transactions/deposite_email.html")
         return super().form_valid(form)
     
-    
+
+@method_decorator(login_required, name='dispatch')
 class BorrowBookView(TransactionCreateMixin):
     template_name = 'transactions/borrow_book.html'
     form_class = BorrowBookForm
