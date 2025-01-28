@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+  <a class="navbar-brand" href="#">Library Management</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'homepage' %}">Home <span class="sr-only">(current)</span></a>
+      </li>  
+
+      {% if request.user.is_authenticated %}
+      <li class="nav-item mx-3">
+        <a class="nav-link" href="{% url 'transaction_report' %}">History Report</a>
+      </li>
+
+      <li class="nav-item mx-3">
+        <a class="nav-link" href="{% url 'deposit_money' %}">Deposite</a>
+      </li>
+      {% endif %}
+    </ul>
+
+
+    <div class="form-inline my-2 my-lg-0">
+      <ul class="navbar-nav mr-auto">
+        {% if request.user.is_authenticated %}
+      
+
+       <div class="text-blue-900 my-auto font-black px-5">Welcome, {{ request.user.first_name }} (balance : {{request.user.account.balance}}) </div>
+
+    
+       <li class="nav-item mx-3">
+        <a class="nav-link btn btn-warning text-dark" href="{% url 'profile' %}">Profile</a>
+      </li>
+     
+       <li class="nav-item mx-3">
+        <a class="nav-link btn btn-danger text-dark" href="{% url 'logout' %}">Logout</a>
+      </li>
+     
+       {% else %}
+       <li class="nav-item mx-3">
+        <a class="nav-link btn btn-warning text-dark" href="{% url 'register' %}">Signup</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link btn btn-primary text-dark" href="{% url 'login' %}">Login</a>
+      </li>
+       {% endif %}
+        
+      </ul>
+    </div>
+    
+  </div>
+</nav>

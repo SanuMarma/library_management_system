@@ -1,0 +1,129 @@
+<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+{% extends 'base.html' %} 
+{% load static %}
+{% load humanize %}
+{% block head_title %} History Report{% endblock %} {% block content %}
+
+<div class="container mt-6">
+    <h2>Profile</h2>
+    <hr>
+ 
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="col-6">
+                <img class="card-img-top" src="{% static 'profile.png' %}" alt="Card image cap"
+                    style="width: 15%; height: 70px" />
+            </div>
+
+            <div class="col-6">
+                <h4 class="card-title">{{ user.first_name }} {{ user.last_name }}</h4>
+            <p class="card-text">Email: {{ user.email }}</p>
+            <p class="card-text">Balance: {{ account.balance|floatformat:2|intcomma }}$</p>
+            <a class="btn btn-success" href="{% url 'deposit_money' %}">Deposite</a>
+            </div>
+            
+        </div>
+    </div>
+
+<div class="my-10 py-3 px-4 bg-white rounded-xl shadow-md">
+  <h1 class="font-bold text-3xl text-center pb-5 pt-2">Borrowing History Report</h1>
+  <hr />
+  <form method="get" action="{% url 'transaction_report' %}">
+    <div class="flex justify-center">
+      <div
+        class="mt-10 pl-3 pr-2 bg-white border rounded-md border-gray-500 flex justify-between items-center relative w-4/12 mx-2"
+      >
+        <label for="start_date">From:</label>
+        <input
+          class="appearance-none w-full outline-none focus:outline-none active:outline-none"
+          type="date"
+          id="start_date"
+          name="start_date"
+        />
+      </div>
+ 
+      <div
+        class="mt-10 pl-3 pr-2 bg-white border rounded-md border-gray-500 flex justify-between items-center relative w-4/12"
+      >
+        <label for="end_date">To:</label>
+        <input
+          class="appearance-none w-full outline-none focus:outline-none active:outline-none"
+          type="date"
+          id="end_date"
+          name="end_date"
+        />
+      </div>
+      <div class="mt-10 pl-3 pr-2 flex justify-between items-center relative w-4/12">
+        <button
+          class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Filter
+        </button>
+      </div>
+    </div>
+  </form>
+  <table
+    class="table-auto mx-auto w-full px-5 rounded-xl mt-8 border dark:border-neutral-500"
+  >
+    <thead class="bg-purple-900 text-white text-left">
+      <tr
+        class="bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-md py-2 px-4 text-white font-bold"
+      >
+        <th class="px-4 py-2">Id</th>
+        <th class="px-4 py-2">Book Name</th>
+        <th class="px-4 py-2">Price</th>
+        <th class="px-4 py-2">Balance After Transaction</th>
+        <th class="px-4 py-2">Date</th>
+        <th class="px-4 py-2">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for transaction in object_list %}
+      <tr class="border-b dark:border-neutral-500">
+
+        <td class="px-4 py-2 border">
+            {{ transaction.id }}
+        </td>
+
+        <td class="px-4 py-2 border">
+        
+              {{ transaction.book.title }}
+         </td>
+
+        <td class="px-4 py-2 border">
+            $ {{ transaction.amount|floatformat:2|intcomma }}
+          </td>
+
+
+        <td class="px-4 py-2 border">
+          $ {{ transaction.balance_after_transaction|floatformat:2|intcomma }}
+        </td>
+
+        <td class="px-4 py-2">
+            {{ transaction.timestamp|date:"F d, Y h:i A" }}
+          </td>
+
+          <td class="px-4 py-3 text-s border">
+            <a href="{% url 'return_book' transaction.id %}"
+              class="px-2 py-1 font-bold leading-tight rounded-sm text-green-700 bg-red-100  text-green-700 bg-green-100"
+            >
+            <button class="btn btn-success btn-sm m-2">Return</button>
+          </a>
+          </td>
+
+
+      </tr>
+      {% endfor %}
+      
+      <tr class="bg-gray-800 text-white">
+        <th class="px-4 py-2 text-right" colspan="5">Current Balance</th>
+        <th class="px-4 py-2 text-left">
+          $ {{ account.balance|floatformat:2|intcomma }}
+        </th>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+{% endblock %}
